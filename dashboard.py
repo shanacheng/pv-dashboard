@@ -1,4 +1,3 @@
-
 import dash
 from dash import dcc
 from dash import html
@@ -8,11 +7,11 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as mat
 from dash.dependencies import Input, Output
 
-df = pd.read_csv('/Users/shanacheng/Documents/332_2020/datasets/lab2.csv')
-df3 = pd.read_csv('/Users/shanacheng/Documents/332_2020/datasets/lab3.csv')
+df = pd.read_csv('./datasets/lab2.csv')
+df3 = pd.read_csv('./datasets/lab3.csv')
 
-
-mapp = px.choropleth(data_frame=df3, title="Percent of Population That is White", locations=df3['States'], locationmode="USA-states", color=df3['percent_whitepop'], scope="usa", hover_name="States",
+mapp = px.choropleth(data_frame=df3, title="Percent of Population That is White", locations=df3['States'],
+                     locationmode="USA-states", color=df3['percent_whitepop'], scope="usa", hover_name="States",
                      color_continuous_scale="Blues", height=680)
 
 mapp.update_layout(margin={"t": 20})
@@ -20,62 +19,62 @@ mapp.update_layout(margin={"t": 20})
 xy = ["Percent of Pop Killed By Police", "State Population", "percent_republican",
       "percent_democrat", "percent_blackpop", "percent_whitepop", "Number of Deaths per State"]
 # data = df3.loc[:, xy]
-data = df3.reindex(columns = xy)
+data = df3.reindex(columns=xy)
 c = data.corr()
-cfig = px.imshow(c, x=["Percent of Pop Killed By Police", "State Population", "percent_republican", "percent_democrat", "percent_blackpop", "percent_whitepop", "Number of Deaths per State"],
+cfig = px.imshow(c, x=["Percent of Pop Killed By Police", "State Population", "percent_republican", "percent_democrat",
+                       "percent_blackpop", "percent_whitepop", "Number of Deaths per State"],
                  y=["Percent of Pop Killed By Police", "State Population", "percent_republican",
-                     "percent_democrat", "percent_blackpop", "percent_whitepop", "Number of Deaths per State"],
+                    "percent_democrat", "percent_blackpop", "percent_whitepop", "Number of Deaths per State"],
                  height=700, width=700, color_continuous_scale=px.colors.diverging.RdBu)
 
 cfig.update_layout(title_text='Correlation Matrix: Per State',
                    title_x=.58, title_y=.88)
 
-
 app = dash.Dash(__name__)
 app.layout = html.Div(children=[
     html.H1('Deaths by Police in the United States (2015)', style={
-            "text-align": "center", "font-family": "helvetica", "color": "#473E3C"}),
+        "text-align": "center", "font-family": "helvetica", "color": "#473E3C"}),
     html.H4('Scatter Plot: x axis', style={
-            "font-family": "helvetica", "color": "#473E3C", 'width': '45%', 'float': 'left', 'display': 'inline-block'}),
+        "font-family": "helvetica", "color": "#473E3C", 'width': '45%', 'float': 'left', 'display': 'inline-block'}),
 
     html.Div(
         dcc.Dropdown(id='xcol', style={"font-family": "helvetica", "width": "50%"},
                      clearable=False, value='Number of Deaths per State', multi=False, options=[
-            {'label': 'Death Count per State',
-                'value': 'Number of Deaths per State'},
-            {'label': 'Percent of Population: White',
-             'value': 'Percent of Population in State: White'},
-            {'label': 'Percent of Population: Black',
-             'value': 'Percent of Population in State: Black'},
-            {'label': 'Percent of Republicans/Republican Leaning',
-             'value': 'Percent of Republican/Leaning Republicans per State'},
-            {'label': 'Percent of Democrats/Democrat Leaning',
-             'value': 'Percent of Democrats/Leaning Democrats per State'},
-            {'label': 'State Political Lean per Death',
-             'value': 'State Political Lean'},
-            {'label': 'State', 'value': 'States'},
-            {'label': 'Victim\'s Age', 'value': 'Ages of Victims'},
-        ]),
-
-    ),
-    html.H4('Scatter Plot: y axis:', style={
-            "font-family": "helvetica", "color": "#473E3C", 'width': '45%'}),
-    html.Div(
-        dcc.Dropdown(
-            id='ycol', style={"font-family": "helvetica", "width": "50%"}, value='Number of Deaths per State',
-            multi=False, clearable=False, options=[
                 {'label': 'Death Count per State',
-                    'value': 'Number of Deaths per State'},
+                 'value': 'Number of Deaths per State'},
                 {'label': 'Percent of Population: White',
-                    'value': 'Percent of Population in State: White'},
+                 'value': 'Percent of Population in State: White'},
                 {'label': 'Percent of Population: Black',
-                    'value': 'Percent of Population in State: Black'},
+                 'value': 'Percent of Population in State: Black'},
                 {'label': 'Percent of Republicans/Republican Leaning',
                  'value': 'Percent of Republican/Leaning Republicans per State'},
                 {'label': 'Percent of Democrats/Democrat Leaning',
                  'value': 'Percent of Democrats/Leaning Democrats per State'},
                 {'label': 'State Political Lean per Death',
-                    'value': 'State Political Lean'},
+                 'value': 'State Political Lean'},
+                {'label': 'State', 'value': 'States'},
+                {'label': 'Victim\'s Age', 'value': 'Ages of Victims'},
+            ]),
+
+    ),
+    html.H4('Scatter Plot: y axis:', style={
+        "font-family": "helvetica", "color": "#473E3C", 'width': '45%'}),
+    html.Div(
+        dcc.Dropdown(
+            id='ycol', style={"font-family": "helvetica", "width": "50%"}, value='Number of Deaths per State',
+            multi=False, clearable=False, options=[
+                {'label': 'Death Count per State',
+                 'value': 'Number of Deaths per State'},
+                {'label': 'Percent of Population: White',
+                 'value': 'Percent of Population in State: White'},
+                {'label': 'Percent of Population: Black',
+                 'value': 'Percent of Population in State: Black'},
+                {'label': 'Percent of Republicans/Republican Leaning',
+                 'value': 'Percent of Republican/Leaning Republicans per State'},
+                {'label': 'Percent of Democrats/Democrat Leaning',
+                 'value': 'Percent of Democrats/Leaning Democrats per State'},
+                {'label': 'State Political Lean per Death',
+                 'value': 'State Political Lean'},
                 {'label': 'State', 'value': 'States'},
 
                 {'label': 'Victim\'s Age', 'value': 'Ages of Victims'},
@@ -87,18 +86,18 @@ app.layout = html.Div(children=[
     html.Div([
         dcc.Graph(id='parallel')], style={'display': 'inline-block', 'width': '60%'}),
 
-
     html.Div([dcc.Graph(id="mapp", figure=mapp)], style={'width': '58%', 'display': 'inline-block', 'float': 'left',
-                                                         'padding': '10px 10px', 'backgroundColor': 'rgb(250, 250, 250)'}),
+                                                         'padding': '10px 10px',
+                                                         'backgroundColor': 'rgb(250, 250, 250)'}),
     html.Div([
         dcc.Graph(id="bar_graph"), dcc.Graph(id="scatterg2")], style={'display': 'inline-block',
-                                                                      'padding': '10px 10px', 'backgroundColor': 'rgb(250, 250, 250)'},
+                                                                      'padding': '10px 10px',
+                                                                      'backgroundColor': 'rgb(250, 250, 250)'},
     ),
 
     html.Div(
         dcc.Graph(id="correlation", figure=cfig)
     )
-
 
 ])
 
@@ -110,7 +109,7 @@ app.layout = html.Div(children=[
 )
 def scat(xcol, ycol):
     scatfig = px.scatter(df, x=xcol, y=ycol, title=xcol +
-                         ' vs ' + ycol, hover_name="States")
+                                                   ' vs ' + ycol, hover_name="States")
     return scatfig
 
 
@@ -146,7 +145,7 @@ def updateparallel(hoverData, ycol):
                                           dict(
                                               label='Number of Deaths', values=df3['Number of Deaths per State']),
                                           dict(constraintrange=[
-                                               c, c+1], label='State Population', values=df3['State Population']),
+                                              c, c + 1], label='State Population', values=df3['State Population']),
 
                                       ])
                                       )
@@ -162,8 +161,10 @@ def updateparallel(hoverData, ycol):
 )
 def updatebar(hoverData):
     colors = ['gray', ] * 50
-    statearray = ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA",
-                  "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "SC", "SD", "TN",
+    statearray = ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS",
+                  "KY", "LA", "MA",
+                  "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK",
+                  "OR", "PA", "SC", "SD", "TN",
                   "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"]
     if not hoverData:
         colors = ['gray', ] * 50
@@ -187,14 +188,16 @@ def updatebar(hoverData):
     Input('mapp', 'hoverData')
 )
 def updatescatter2(hoverData):
-    colors = ['white']*50
-    starray = ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA",
-               "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "SC", "SD", "TN",
+    colors = ['white'] * 50
+    starray = ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS",
+               "KY", "LA", "MA",
+               "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK",
+               "OR", "PA", "SC", "SD", "TN",
                "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"]
     if not hoverData:
-        colors = ['gray']*50
+        colors = ['gray'] * 50
     else:
-        colors = ['gray']*50
+        colors = ['gray'] * 50
         val = hoverData['points'][0]['hovertext']
         for i in starray:
             if i == val:
